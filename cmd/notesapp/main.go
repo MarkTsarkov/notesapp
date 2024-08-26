@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-    cfg, err := config.LoadConfig("configs/dev.yaml")
+    cfg, err := config.LoadConfig("../../configs/dev.yaml")
     if err != nil {
         log.Fatalf("Ошибка загрузки конфигурации: %v", err)
     }
@@ -18,5 +18,9 @@ func main() {
         fmt.Fprintf(w, "alloha from %s!", cfg.App.Name)
     })
 
-    log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", cfg.App.Port), nil))
+	addr := fmt.Sprintf(":%d", cfg.App.Port)
+    log.Printf("Сервер запущен на %s\n", addr)
+    if err := http.ListenAndServe(addr, nil); err != nil {
+        log.Fatalf("Ошибка запуска сервера: %v", err)
+    }
 }
